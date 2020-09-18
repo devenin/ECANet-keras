@@ -20,7 +20,6 @@ def eca_layer(inputs_tensor=None,num=None,gamma=2,b=1,**kwargs):
     x = Reshape((channels,1))(x_global_avg_pool)
     x = Conv1D(1,kernel_size=k,padding="same",name="eca_conv1_" + str(num))(x)
     x = Activation('sigmoid', name='eca_conv1_relu_' + str(num))(x)  #shape=[batch,chnnels,1]
-    x = tf.expand_dims(x,-1)  #shape=[batch,chnnels,1,1]
-    x = tf.transpose(x,(0,2,3,1))
+    x = Reshape((1, 1, channels))(x)
     output = multiply([inputs_tensor,x])
     return output
